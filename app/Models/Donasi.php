@@ -10,11 +10,19 @@ class Donasi extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama', 'makanan', 'alamat', 'jumlah', 'keterangan',
+        'nama_makanan',
+        'kategori',
+        'deskripsi_makanan',
+        'alamat',
+        'jumlah',
+        'kadaluwarsa',
+        'halal',
+        'gambar',
+        'user_id' // opsional, jika kamu menghubungkan donasi ke pengguna tertentu
     ];
 
     public function pengguna()
     {
-        return $this->belongsTo(User::class); // relasi ke user, pastikan sesuai kebutuhanmu
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

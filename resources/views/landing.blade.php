@@ -51,7 +51,7 @@
             Bersama kita bisa lawan kelaparan dan kurangi pemborosan. Karena peduli itu sederhana, tapi dampaknya luar biasa.
           </p>
           <div class="flex gap-4 justify-center md:justify-start">
-            <a href="{{ route('donasi.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-md">
+            <a href="{{ route('form.donasi') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-md">
               Donasi Sekarang
             </a>
           </div>

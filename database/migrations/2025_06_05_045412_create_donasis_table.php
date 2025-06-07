@@ -9,10 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('donasis', function (Blueprint $table) {
-            $table->bigIncrements('id_donasi');
+            $table->bigIncrements('id'); // Pakai "id" standar Laravel
 
-            $table->unsignedBigInteger('id_user');
-            $table->unsignedBigInteger('id_lokasi')->nullable(); // opsional, karena belum ada tabel lokasi
+            $table->unsignedBigInteger('user_id'); // Ganti dari id_user ke user_id (konvensi Laravel)
+            $table->unsignedBigInteger('lokasi_id')->nullable(); // Ganti id_lokasi ke lokasi_id untuk konsistensi
 
             $table->string('alamat');
             $table->string('nama_makanan');
@@ -21,20 +21,12 @@ return new class extends Migration
             $table->integer('jumlah');
             $table->enum('halal', ['halal', 'non-halal']);
             $table->date('kadaluwarsa');
-            $table->binary('gambar')->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            $table->string('gambar')->nullable(); // Ganti dari binary jadi string (untuk path gambar)
+            $table->timestamps(); // created_at & updated_at otomatis
 
-            // Foreign key ke tabel users
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            // Foreign key
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
-
-    public function down(): void
-    {
-        Schema::table('donasis', function (Blueprint $table) {
-            $table->dropForeign(['id_user']);
-        });
-
-        Schema::dropIfExists('donasis');
-    }
+   
 };

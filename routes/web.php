@@ -33,5 +33,13 @@ Route::get('tulisan', function () {
 
 Route::get('/donasi', [DonasiController::class, 'index'])->name('donasi.index');
 
+Route::get('/donasi/form', [DonasiController::class, 'form'])
+    ->middleware('auth')
+    ->name('form.donasi');
+
+Route::post('/donasi/store', [DonasiController::class, 'store'])
+    ->middleware('auth')
+    ->name('donasi.store');
+
 
 require __DIR__.'/auth.php';
