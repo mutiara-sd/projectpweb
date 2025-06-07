@@ -41,5 +41,9 @@ Route::post('/donasi/store', [DonasiController::class, 'store'])
     ->middleware('auth')
     ->name('donasi.store');
 
+Route::get('/donasi/create', [DonasiController::class, 'form'])
+    ->middleware('auth')
+    ->name('donasi.create');
+
 
 require __DIR__.'/auth.php';
