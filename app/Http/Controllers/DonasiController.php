@@ -22,7 +22,7 @@ class DonasiController extends Controller
     }
 
     public function store(Request $request)
-{
+    {
     $validated = $request->validate([
         'nama_makanan' => 'required|string|max:255',
         'kategori' => 'required|string',
@@ -49,6 +49,12 @@ class DonasiController extends Controller
     ]);
 
     return redirect()->route('donasi.create')->with('success', 'Donasi berhasil ditambahkan!');
+    }
+
+    public function dashboardList()
+    {
+    $donasis = Donasi::latest()->take(3)->get(); // atau pakai ->paginate()
+    return view('dashboard', compact('donasis'));
     }
 }
 

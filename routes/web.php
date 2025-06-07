@@ -45,5 +45,6 @@ Route::get('/donasi/create', [DonasiController::class, 'form'])
     ->middleware('auth')
     ->name('donasi.create');
 
+Route::get('/dashboard', [DonasiController::class, 'dashboardList'])->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
