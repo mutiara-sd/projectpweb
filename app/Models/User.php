@@ -23,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'no_telepon',
+        'lokasi_detail',
+        'lokasi_id',
     ];
 
     /**
@@ -48,4 +51,9 @@ class User extends Authenticatable
         ];
     }
     
+    public function lokasi()
+    {
+    return $this->belongsTo(Lokasi::class, 'lokasi_id', 'lokasi_id');
+    }
+
 }

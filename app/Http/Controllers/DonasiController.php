@@ -60,7 +60,9 @@ class DonasiController extends Controller
 
     public function hariIni()
     {
-    $donasis = Donasi::whereDate('created_at', Carbon::today())->get();
+    $today = Carbon::today();
+
+    $donasis = Donasi::whereDate('kadaluwarsa', '>=', $today)->get();
 
     return view('donasi.hari-ini', compact('donasis'));
     }

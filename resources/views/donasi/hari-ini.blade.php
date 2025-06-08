@@ -29,6 +29,7 @@
                                         {{ $donasi->halal ? 'Halal' : 'Tidak Halal' }}
                                     </span>
                                 </p>
+                                <p class="text-sm text-gray-500">Kadaluarsa: {{ $donasi->tanggal_kedaluwarsa }}</p>
                             </div>
                         </div>
                     @empty
