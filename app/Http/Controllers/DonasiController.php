@@ -54,7 +54,11 @@ class DonasiController extends Controller
 
     public function dashboardList()
     {
-    $donasis = Donasi::latest()->take(3)->get(); // atau pakai ->paginate()
+    $donasis = Donasi::whereDate('kadaluwarsa', '>=', Carbon::today())
+        ->latest()
+        ->take(3)
+        ->get();
+
     return view('dashboard', compact('donasis'));
     }
 

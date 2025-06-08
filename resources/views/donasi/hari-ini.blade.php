@@ -28,7 +28,7 @@
                                 <p class="text-sm text-gray-600">{{ $donasi->alamat }}</p>
                                 <p class="text-sm text-gray-600">Jumlah: {{ $donasi->jumlah }}</p>
                                 <p class="text-sm text-gray-600">Status Halal: 
-                                    <span class="{{ $donasi->halal == 'Halal' ? 'text-green-600' : 'text-red-600' }}">
+                                    <span class="{{ strtolower($donasi->halal) === 'halal' ? 'text-green-600' : 'text-red-600' }}">
                                         {{ $donasi->halal }}
                                     </span>
                                 </p>

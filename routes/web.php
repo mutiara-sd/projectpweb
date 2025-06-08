@@ -54,6 +54,8 @@ Route::get('/donasi/hari-ini', [DonasiController::class, 'hariIni'])->name('dona
 Route::get('/riwayat', [RiwayatController::class, 'riwayatuser'])->name('riwayat.index')->middleware('auth');
 
 Route::get('/form-penerima/{id}', [PenerimaController::class, 'create'])->name('form.penerima');
-Route::post('/form-penerima', [PenerimaController::class, 'store'])->name('form.penerima.store');
-
+Route::post('/form-penerima', [PenerimaController::class, 'store'])
+    ->middleware('auth') // ← ini WAJIB agar Auth::id() tidak null
+    ->name('form.penerima.store');
+    
 require __DIR__.'/auth.php';

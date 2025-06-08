@@ -11,9 +11,7 @@ class Penerima extends Model
 
     protected $fillable = [
         'donasi_id',
-        'nama',
-        'no_hp',
-        'alamat',
+        'user_id',  // tambahkan ini
         'tanggal_ambil',
         'jumlah_diambil',
     ];
