@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Donasi;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 
 class DonasiController extends Controller
@@ -55,6 +56,13 @@ class DonasiController extends Controller
     {
     $donasis = Donasi::latest()->take(3)->get(); // atau pakai ->paginate()
     return view('dashboard', compact('donasis'));
+    }
+
+    public function hariIni()
+    {
+    $donasis = Donasi::whereDate('created_at', Carbon::today())->get();
+
+    return view('donasi.hari-ini', compact('donasis'));
     }
 }
 

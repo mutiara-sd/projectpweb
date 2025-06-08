@@ -37,35 +37,45 @@
                 </div>
 
             <!-- Donasi Makanan -->
-            <div class="mt-10">
-                <h2 class="text-lg font-bold text-gray-800 mb-4">Donasi Makanan Terbaru</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    @forelse ($donasis as $donasi)
-                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                            @if ($donasi->foto)
-                                <img src="{{ asset('storage/' . $donasi->foto) }}" alt="Foto Makanan"
-                                    class="w-full h-40 object-cover rounded-t-xl">
-                            @else
-                                <div class="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500">
-                                    Tidak ada foto
-                                </div>
-                            @endif
-                            <div class="p-4">
-                                <h3 class="text-md font-semibold text-gray-900">{{ $donasi->nama_makanan }}</h3>
-                                <p class="text-sm text-gray-600">{{ $donasi->alamat }}</p>
-                                <p class="text-sm text-gray-600">Jumlah: {{ $donasi->jumlah }}</p>
-                                <p class="text-sm text-gray-600">Status Halal: 
-                                    <span class="{{ $donasi->halal ? 'text-green-600' : 'text-red-600' }}">
-                                        {{ $donasi->halal ? 'Halal' : 'Tidak Halal' }}
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    @empty
-                        <p>Tidak ada donasi makanan tersedia.</p>
-                    @endforelse
+            <section class="mt-10 bg-gray-50 py-8 px-4 overflow-hidden shadow-sm rounded-xl">
+                <!-- Flex header di sini -->
+                <div class="flex flex-wrap justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Donasi Makanan Terbaru</h2>
+                    <a href="{{ route('donasi.hari-ini') }}" class="text-blue-600 hover:underline text-sm font-medium">
+                        Lihat lainnya →
+                    </a>
                 </div>
-            </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        @forelse ($donasis as $donasi)
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                                @if ($donasi->gambar)
+                                    <img src="{{ asset('storage/' . $donasi->gambar) }}" alt="Foto Makanan"
+                                        class="w-full h-40 object-cover rounded-t-xl">
+                                @else
+                                    <div class="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500">
+                                        Tidak ada foto
+                                    </div>
+                                @endif
+                                <div class="p-4">
+                                    <h3 class="text-md font-semibold text-gray-900">{{ $donasi->nama_makanan }}</h3>
+                                    <p class="text-sm text-gray-600">{{ $donasi->alamat }}</p>
+                                    <p class="text-sm text-gray-600">Jumlah: {{ $donasi->jumlah }}</p>
+                                    <p class="text-sm text-gray-600">Status Halal: 
+                                        <span class="{{ $donasi->halal ? 'text-green-600' : 'text-red-600' }}">
+                                            {{ $donasi->halal ? 'Halal' : 'Tidak Halal' }}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        @empty
+                            <p>Tidak ada donasi makanan tersedia.</p>
+                        @endforelse
+                    </div>
+                
+            </section>
+
+
+
 
 
 
