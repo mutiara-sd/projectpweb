@@ -49,4 +49,7 @@ Route::get('/dashboard', [DonasiController::class, 'dashboardList'])->middleware
 
 Route::get('/donasi/hari-ini', [DonasiController::class, 'hariIni'])->name('donasi.hari-ini');
 
+Route::get('/riwayat', [App\Http\Controllers\RiwayatController::class, 'riwayatuser'])->name('riwayat.index');
+
+
 require __DIR__.'/auth.php';

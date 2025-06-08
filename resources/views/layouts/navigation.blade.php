@@ -20,6 +20,9 @@
                     <x-nav-link href="{{ route('form.donasi') }}" :active="request()->routeIs('form.donasi')">
                         {{ __('Donasi') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('riwayat.index') }}" :active="request()->routeIs('riwayat.index')">
+                        {{ __('Riwayat') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -75,6 +78,14 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('form.donasi')" :active="request()->routeIs('form.donasi')">
+                {{ __('Donasi') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('riwayat.index')" :active="request()->routeIs('riwayat.index')">
+                {{ __('Riwayat') }}
+            </x-responsive-nav-link>
+
+
         </div>
 
         <!-- Responsive Settings Options -->

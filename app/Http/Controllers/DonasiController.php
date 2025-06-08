@@ -60,6 +60,7 @@ class DonasiController extends Controller
 
     public function hariIni()
     {
+    Carbon::setLocale('id');
     $today = Carbon::today();
 
     $donasis = Donasi::whereDate('kadaluwarsa', '>=', $today)->get();
