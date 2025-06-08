@@ -25,6 +25,9 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'no_telepon' => ['nullable', 'string', 'max:20'], // tambahan
+            'lokasi_detail' => ['nullable', 'string', 'max:255'], // tambahan
+            'lokasi_id' => ['nullable', 'exists:lokasis,lokasi_id'], // tambahan
         ];
     }
 }

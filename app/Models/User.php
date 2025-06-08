@@ -56,4 +56,14 @@ class User extends Authenticatable
     return $this->belongsTo(Lokasi::class, 'lokasi_id', 'lokasi_id');
     }
 
+    public function penerimas()
+    {
+    return $this->hasMany(Penerima::class);
+    }
+
+    public function donasis()
+    {
+    return $this->hasMany(Donasi::class);
+    }
+
 }

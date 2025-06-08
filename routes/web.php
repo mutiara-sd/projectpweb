@@ -51,7 +51,7 @@ Route::get('/dashboard', [DonasiController::class, 'dashboardList'])->middleware
 
 Route::get('/donasi/hari-ini', [DonasiController::class, 'hariIni'])->name('donasi.hari-ini');
 
-Route::get('/riwayat', [RiwayatController::class, 'riwayatuser'])->name('riwayat.index');
+Route::get('/riwayat', [RiwayatController::class, 'riwayatuser'])->name('riwayat.index')->middleware('auth');
 
 Route::get('/form-penerima/{id}', [PenerimaController::class, 'create'])->name('form.penerima');
 Route::post('/form-penerima', [PenerimaController::class, 'store'])->name('form.penerima.store');

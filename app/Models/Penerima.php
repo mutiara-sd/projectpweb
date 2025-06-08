@@ -22,4 +22,9 @@ class Penerima extends Model
     {
         return $this->belongsTo(Donasi::class);
     }
+
+    public function user()
+    {
+    return $this->belongsTo(User::class);
+    }
 }
