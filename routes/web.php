@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonasiController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\PenerimaController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('landing');
@@ -57,5 +58,9 @@ Route::get('/form-penerima/{id}', [PenerimaController::class, 'create'])->name('
 Route::post('/form-penerima', [PenerimaController::class, 'store'])
     ->middleware('auth') // ← ini WAJIB agar Auth::id() tidak null
     ->name('form.penerima.store');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('dashboard');
     
 require __DIR__.'/auth.php';

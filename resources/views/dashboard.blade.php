@@ -10,12 +10,28 @@
     <div class="py-6" x-data="{ open: false, selectedDonasi: {} }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <!-- Welcome Message -->
-            <div class="mb-6 bg-white shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-800 text-lg font-semibold">
-                    Haloo, {{ Auth::user()->name }}! Selamat datang di MakanYuk!
+            <!-- Welcome Message with Gradient -->
+            <div class="relative bg-gradient-to-r from-blue-500 to-blue-300 text-white rounded-xl shadow-md p-6 overflow-hidden mb-6">
+                <div class="relative z-10">
+                    <div class="text-xl font-semibold">
+                        Haii {{ Auth::user()->name }}! 
+                    </div>
+                    <div class="text-sm opacity-90 mt-1">
+                        Terima kasih sudah terus berbagi kebaikan.
+                    </div>
+                    <div class="mt-4 flex justify-around text-sm font-medium">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">{{ $totalPenerimaan }}</div>
+                            <div class="opacity-90">Menerima Donasi</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">{{ $totalDonasi }}</div>
+                            <div class="opacity-90">Donasi</div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
 
             <!-- Slideshow -->
             <div class="relative overflow-hidden rounded-lg shadow-lg">
@@ -48,11 +64,22 @@
                             $today = \Carbon\Carbon::today();
                             $diffInDays = $today->diffInDays($kadaluwarsa, false);
                         @endphp
+
+                        {{-- Filter: Tampilkan hanya donasi yang kadaluarsanya hari ini atau besok --}}
+                        @if ($kadaluwarsa->toDateString() < $today->toDateString())
+                            @continue {{-- Skip donasi yang sudah kadaluarsa (kemarin dan sebelumnya) --}}
+                        @endif
+                        
+                        {{-- Opsional: Jika ingin batasi hanya hari ini saja, uncomment baris di bawah --}}
+                        {{-- @if ($kadaluwarsa->toDateString() > $today->toDateString())
+                            @continue
+                        @endif --}}
+
                         <div class="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer"
-                             @click="open = true; selectedDonasi = {{ $donasi->toJson() }}">
+                            @click="open = true; selectedDonasi = {{ $donasi->toJson() }}">
                             @if ($donasi->gambar)
                                 <img src="{{ asset('storage/' . $donasi->gambar) }}" alt="Foto Makanan"
-                                     class="w-full h-40 object-cover rounded-t-xl">
+                                    class="w-full h-40 object-cover rounded-t-xl">
                             @else
                                 <div class="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500">
                                     Tidak ada foto
@@ -70,17 +97,17 @@
                                 <p class="text-sm text-gray-500">
                                     Kadaluarsa:
                                     @if ($kadaluwarsa->isToday())
-                                        Hari ini
+                                        <span class="text-orange-600 font-medium">Hari ini</span>
                                     @elseif ($kadaluwarsa->isTomorrow())
-                                        Besok
+                                        <span class="text-yellow-600">Besok</span>
                                     @elseif ($diffInDays > 1)
                                         {{ $diffInDays }} hari lagi
                                     @elseif ($diffInDays === 1)
                                         Besok
                                     @elseif ($diffInDays === -1)
-                                        Kemarin
+                                        <span class="text-red-600">Kemarin</span>
                                     @elseif ($diffInDays < -1)
-                                        Sudah lewat {{ abs($diffInDays) }} hari
+                                        <span class="text-red-600">Sudah lewat {{ abs($diffInDays) }} hari</span>
                                     @else
                                         {{ $kadaluwarsa->translatedFormat('d M Y') }}
                                     @endif
@@ -93,35 +120,6 @@
                 </div>
             </section>
 
-            <!-- MODAL -->
-            <div x-show="open"
-                 class="fixed inset-0 z-50 bg-gray-900 bg-opacity-50 flex items-center justify-center"
-                 x-cloak>
-                <div class="bg-white p-6 rounded-lg max-w-md w-full relative">
-                    <button @click="open = false" class="absolute top-2 right-3 text-gray-600 hover:text-gray-800">&times;</button>
-                    <h2 class="text-xl font-bold mb-2" x-text="selectedDonasi.nama_makanan"></h2>
-                    <img :src="'/storage/' + selectedDonasi.gambar" class="w-full h-40 object-cover rounded mb-2" alt="">
-                    <p class="text-sm text-gray-600" x-text="selectedDonasi.alamat"></p>
-                    <p class="text-sm">Jumlah: <span x-text="selectedDonasi.jumlah"></span></p>
-                    <p class="text-sm">Status Halal: <span x-text="selectedDonasi.halal"></span></p>
-                    <p class="text-sm">Deskripsi: <span x-text="selectedDonasi.deskripsi_makanan"></span></p>
-                    <p class="text-sm">Kadaluarsa: <span x-text="selectedDonasi.kadaluwarsa"></span></p>
-                    <div class="mt-4">
-                        <a :href="'/form-penerima/' + selectedDonasi.id" class="inline-block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-                            Ambil Donasi
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Login Status -->
-            <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Script Carousel -->
     <script>

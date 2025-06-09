@@ -54,10 +54,10 @@ class DonasiController extends Controller
 
     public function dashboardList()
     {
-    $donasis = Donasi::whereDate('kadaluwarsa', '>=', Carbon::today())
-        ->latest()
-        ->take(3)
-        ->get();
+    $donasis = Donasi::whereDate('kadaluwarsa', '>=', now()->toDateString())
+                    ->orderBy('created_at', 'desc')
+                    ->limit(3) // atau sesuai kebutuhan
+                    ->get();
 
     return view('dashboard', compact('donasis'));
     }
