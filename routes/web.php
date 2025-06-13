@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonasiController;
@@ -11,16 +10,16 @@ Route::get('/', function () {
     return view('landing');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Dashboard - pilih salah satu implementasi
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 Route::get('/admin', function () {
     return view('admin');
@@ -34,33 +33,26 @@ Route::get('tulisan', function () {
     return view('tulisan');
 })->middleware(['auth', 'verified', 'role_or_permission:lihat-tulisan|admin']);
 
+// Donasi Routes
 Route::get('/donasi', [DonasiController::class, 'index'])->name('donasi.index');
 
-Route::get('/donasi/form', [DonasiController::class, 'form'])
-    ->middleware('auth')
-    ->name('form.donasi');
-
-Route::post('/donasi/store', [DonasiController::class, 'store'])
-    ->middleware('auth')
-    ->name('donasi.store');
-
-Route::get('/donasi/create', [DonasiController::class, 'form'])
-    ->middleware('auth')
-    ->name('donasi.create');
-
-Route::get('/dashboard', [DonasiController::class, 'dashboardList'])->middleware(['auth'])->name('dashboard');
+Route::middleware('auth')->group(function () {
+    Route::get('/donasi/form', [DonasiController::class, 'form'])->name('form.donasi');
+    Route::get('/donasi/create', [DonasiController::class, 'form'])->name('donasi.create');
+    Route::post('/donasi/store', [DonasiController::class, 'store'])->name('donasi.store');
+});
 
 Route::get('/donasi/hari-ini', [DonasiController::class, 'hariIni'])->name('donasi.hari-ini');
 
-Route::get('/riwayat', [RiwayatController::class, 'riwayatuser'])->name('riwayat.index')->middleware('auth');
+// Riwayat Routes
+Route::get('/riwayat', [RiwayatController::class, 'riwayatuser'])
+    ->name('riwayat.index')
+    ->middleware('auth');
 
+// Penerima Routes
 Route::get('/form-penerima/{id}', [PenerimaController::class, 'create'])->name('form.penerima');
 Route::post('/form-penerima', [PenerimaController::class, 'store'])
-    ->middleware('auth') // ← ini WAJIB agar Auth::id() tidak null
+    ->middleware('auth')
     ->name('form.penerima.store');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('dashboard');
-    
 require __DIR__.'/auth.php';

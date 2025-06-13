@@ -24,14 +24,14 @@ class DonasiController extends Controller
 
     public function store(Request $request)
     {
-    $validated = $request->validate([
+        $validated = $request->validate([
         'nama_makanan' => 'required|string|max:255',
         'kategori' => 'required|string',
         'deskripsi_makanan' => 'required|string',
         'alamat' => 'required|string',
         'jumlah' => 'required|numeric|min:1',
         'kadaluwarsa' => 'required|date',
-        'halal' => 'required|in:Halal,Non Halal',
+        'halal' => 'required|in:halal,non halal',
         'gambar' => 'required|image|mimes:jpg,jpeg,png|max:4096',
     ]);
 
@@ -50,6 +50,41 @@ class DonasiController extends Controller
     ]);
 
     return redirect()->route('donasi.create')->with('success', 'Donasi berhasil ditambahkan!');
+
+    try {
+        $gambarPath = $request->file('gambar')->store('donasi', 'public');
+
+        $donasi = Donasi::create([
+            'user_id' => Auth::id(),
+            'nama_makanan' => $validated['nama_makanan'],
+            'kategori' => $validated['kategori'],
+            'deskripsi_makanan' => $validated['deskripsi_makanan'],
+            'alamat' => $validated['alamat'],
+            'jumlah' => $validated['jumlah'],
+            'kadaluwarsa' => $validated['kadaluwarsa'],
+            'halal' => $validated['halal'],
+            'gambar' => $gambarPath,
+        ]);
+
+        // Debug: Lihat data yang tersimpan
+        dd([
+            'success' => true,
+            'donasi' => $donasi,
+            'donasi_id' => $donasi->id
+        ]);
+
+        return redirect()->route('form.donasi')->with('success', 'Donasi berhasil ditambahkan!');
+
+    } catch (\Exception $e) {
+        // Debug: Lihat error detail
+        dd([
+            'error' => true,
+            'message' => $e->getMessage(),
+            'line' => $e->getLine(),
+            'file' => $e->getFile()
+        ]);
+    
+    }
     }
 
     public function dashboardList()
