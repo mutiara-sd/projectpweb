@@ -57,6 +57,13 @@
                         Lihat lainnya →
                     </a>
                 </div>
+
+                <p class="text-sm text-gray-500 italic mb-4">
+                    Hanya donasi dari pengguna lain yang ditampilkan. 
+                    Donasi milikmu bisa dilihat di 
+                    <a href="{{ route('riwayat.index') }}" class="text-blue-600 underline hover:text-blue-800">Riwayat Donasi</a>.
+                </p>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     @forelse ($donasis as $donasi)
                         @php

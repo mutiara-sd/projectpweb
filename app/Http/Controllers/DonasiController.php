@@ -102,7 +102,10 @@ class DonasiController extends Controller
     Carbon::setLocale('id');
     $today = Carbon::today();
 
-    $donasis = Donasi::whereDate('kadaluwarsa', '>=', $today)->get();
+    $donasis = Donasi::whereDate('kadaluwarsa', '>=', $today)
+        ->where('user_id', '!=', Auth::id()) // ⛔ Filter: jangan tampilkan donasi milik sendiri
+        ->orderBy('kadaluwarsa', 'asc') // opsional: biar urut
+        ->get();
 
     return view('donasi.hari-ini', compact('donasis'));
     }
