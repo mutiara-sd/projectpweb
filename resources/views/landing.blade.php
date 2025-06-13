@@ -28,6 +28,7 @@
       <a href="#tentang_kami" class="nav-link">Tentang Kami</a>
       <a href="#review" class="nav-link">Review</a>
       <a href="#kontak" class="nav-link">Kontak</a>
+      <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full shadow-md">Daftar</a>
       <a href="{{ route('login') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full shadow-md">Masuk</a>
     </div>
 

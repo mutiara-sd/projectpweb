@@ -5,6 +5,7 @@ use App\Http\Controllers\DonasiController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\PenerimaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('landing');
@@ -21,9 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/admin', function () {
-    return view('admin');
-})->middleware(['auth', 'role:admin']);
+Route::get('/admin', [AdminController::class, 'index'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.dashboard');
 
 Route::get('penulis', function () {
     return '<h1>Helo Penulis</h1>';
