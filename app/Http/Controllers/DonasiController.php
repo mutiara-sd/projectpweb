@@ -109,5 +109,14 @@ class DonasiController extends Controller
 
     return view('donasi.hari-ini', compact('donasis'));
     }
+
+    public function adminIndex()
+    {
+    $donasis = Donasi::latest()->paginate(10);
+
+    return view('admin.donasi', compact('donasis'));
+    }
+
 }
+
 

@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/donasi/form', [DonasiController::class, 'form'])->name('form.donasi');
     Route::get('/donasi/create', [DonasiController::class, 'form'])->name('donasi.create');
     Route::post('/donasi/store', [DonasiController::class, 'store'])->name('donasi.store');
+    Route::get('/admin/donasi', [DonasiController::class, 'adminIndex'])->name('admin.donasi');
 });
 
 Route::get('/donasi/hari-ini', [DonasiController::class, 'hariIni'])->name('donasi.hari-ini');
