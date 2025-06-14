@@ -18,11 +18,11 @@ class Penerima extends Model
 
     public function donasi()
     {
-        return $this->belongsTo(Donasi::class);
+        return $this->belongsTo(Donasi::class, 'donasi_id');
     }
 
     public function user()
     {
-    return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

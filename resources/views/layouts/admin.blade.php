@@ -30,6 +30,7 @@
                 <li><a href="{{ route('admin.dashboard') }}" class="hover:text-yellow-400">Dashboard</a></li>
                 <li><a href="{{ route('admin.user') }}" class="hover:text-yellow-400">User</a></li>
                 <li><a href="{{ route('admin.donasi') }}" class="hover:text-yellow-400">Donasi</a></li>
+                <li><a href="{{ route('admin.penerima') }}" class="hover:text-yellow-400">Penerima Donasi</a></li>
                 <li><a href="{{ route('logout') }}"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                        class="hover:text-yellow-400">Logout</a></li>

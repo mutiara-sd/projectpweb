@@ -53,10 +53,14 @@ Route::get('/riwayat', [RiwayatController::class, 'riwayatuser'])
     ->middleware('auth');
 
 // Penerima Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/penerima', [PenerimaController::class, 'index'])->name('admin.penerima');
+});
 Route::get('/form-penerima/{id}', [PenerimaController::class, 'create'])->name('form.penerima');
 Route::post('/form-penerima', [PenerimaController::class, 'store'])
     ->middleware('auth')
     ->name('form.penerima.store');
+
 
 Route::get('/admin/user', [UserController::class, 'index'])->name('admin.user');
 Route::put('/admin/user/{user}', [UserController::class, 'update'])->name('admin.user.update');

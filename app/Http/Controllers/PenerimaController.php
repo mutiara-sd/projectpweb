@@ -29,4 +29,9 @@ class PenerimaController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Donasi berhasil diambil.');
     }
+     public function index()
+    {
+        $penerimas = Penerima::with(['user', 'donasi'])->paginate(request('entries', 10));
+        return view('admin.penerima', compact('penerimas'));
+    }
 }
