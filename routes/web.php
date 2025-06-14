@@ -6,6 +6,7 @@ use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\PenerimaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('landing');
@@ -55,5 +56,9 @@ Route::get('/form-penerima/{id}', [PenerimaController::class, 'create'])->name('
 Route::post('/form-penerima', [PenerimaController::class, 'store'])
     ->middleware('auth')
     ->name('form.penerima.store');
+
+Route::get('/admin/user', [UserController::class, 'index'])->name('admin.user');
+Route::put('/admin/user/{user}', [UserController::class, 'update'])->name('admin.user.update');
+Route::delete('/admin/user/{user}', [UserController::class, 'destroy'])->name('admin.user.destroy');
 
 require __DIR__.'/auth.php';
