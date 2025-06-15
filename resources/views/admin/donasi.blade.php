@@ -35,6 +35,10 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200" id="donasiTableBody">
             @foreach ($donasis as $i => $donasi)
+                @php
+                    $isExpired = \Carbon\Carbon::parse($donasi->kadaluwarsa)->addDay()->isPast(); // selesai setelah H+1
+                    $isHabis = $donasi->jumlah == 0; // langsung selesai kalau habis
+                @endphp
                 <tr class="hover:bg-gray-50 transition-colors">
                     <td class="px-4 py-2 whitespace-nowrap">{{ $i + 1 }}</td>
                     <td class="px-4 py-2 whitespace-nowrap">{{ $donasi->nama_makanan }}</td>
@@ -44,7 +48,7 @@
                     <td class="px-4 py-2 whitespace-nowrap">{{ $donasi->kadaluwarsa }}</td>
                     <td class="px-4 py-2 whitespace-nowrap">{{ $donasi->alamat }}</td>
                     <td class="px-4 py-2 whitespace-nowrap">
-                        @if (\Carbon\Carbon::parse($donasi->kadaluwarsa)->isPast())
+                        @if ($isHabis || $isExpired)
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Selesai</span>
                         @else
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Belum Selesai</span>
