@@ -5,126 +5,133 @@
         </h2>
     </x-slot>
 
-    <!-- Enhanced Donasi Makanan Section -->
-            <section 
-                class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
-                x-data="{ open: false, selectedDonasi: {} }"
-            >
-                <div class="flex flex-wrap justify-between items-center mb-8">
-                    <div>
-                        <h2 class="text-3xl font-bold text-gray-800 mb-2">Donasi</h2>
-                        <div class="w-16 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
-                    </div>
+    <!-- MULAI X-DATA -->
+    <div x-data="{ 
+        open: false, 
+        selectedDonasi: {},
+        openModal: function(donasi) {
+            this.selectedDonasi = donasi;
+            this.open = true;
+            console.log('Modal opened with data:', donasi);
+        }
+    }">
+
+        <!-- Enhanced Donasi Makanan Section -->
+        <section class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+            <div class="flex flex-wrap justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Donasi</h2>
+                    <div class="w-16 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
                 </div>
+            </div>
 
-                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mb-8">
-                    <p class="text-sm text-blue-700">
-                        <span class="font-semibold">Info:</span> Hanya donasi dari pengguna lain yang ditampilkan. 
-                        Donasi milikmu bisa dilihat di 
-                        <a href="{{ route('riwayat.index') }}" class="font-semibold underline hover:text-blue-800">Riwayat Donasi</a>.
-                    </p>
-                </div>
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mb-8">
+                <p class="text-sm text-blue-700">
+                    <span class="font-semibold">Info:</span> Hanya donasi dari pengguna lain yang ditampilkan. 
+                    Donasi milikmu bisa dilihat di 
+                    <a href="{{ route('riwayat.index') }}" class="font-semibold underline hover:text-blue-800">Riwayat Donasi</a>.
+                </p>
+            </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    @forelse ($donasis as $donasi)
-                        @php
-                            $kadaluwarsa = \Carbon\Carbon::parse($donasi->kadaluwarsa);
-                            $today = \Carbon\Carbon::today();
-                            $diffInDays = $today->diffInDays($kadaluwarsa, false);
-                        @endphp
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                @forelse ($donasis as $donasi)
+                    @php
+                        $kadaluwarsa = \Carbon\Carbon::parse($donasi->kadaluwarsa);
+                        $today = \Carbon\Carbon::today();
+                        $diffInDays = $today->diffInDays($kadaluwarsa, false);
+                    @endphp
 
-                        @if ($kadaluwarsa->toDateString() < $today->toDateString())
-                            @continue
-                        @endif
+                    @if ($kadaluwarsa->toDateString() < $today->toDateString())
+                        @continue
+                    @endif
 
-                        <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden cursor-pointer group"
-                            @click="open = true; selectedDonasi = @json($donasi)">
-                            
-                            <div class="relative overflow-hidden">
-                                @if ($donasi->gambar)
-                                    <img src="{{ asset('storage/' . $donasi->gambar) }}" alt="Foto Makanan"
-                                        class="w-full h-48 object-cover group-hover:scale-105">
-                                @else
-                                    <div class="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                                        <div class="text-center text-gray-400">
-                                            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                            </svg>
-                                            <span class="text-sm">Tidak ada foto</span>
-                                        </div>
+                    <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden cursor-pointer group transition-all duration-300"
+                        @click="openModal({{ Js::from([
+                            'id' => $donasi->id,
+                            'nama_makanan' => $donasi->nama_makanan,
+                            'alamat' => $donasi->alamat,
+                            'jumlah' => $donasi->jumlah,
+                            'kadaluwarsa' => $donasi->kadaluwarsa,
+                            'halal' => $donasi->halal ? 'Halal' : 'Tidak Halal',
+                            'gambar' => $donasi->gambar,
+                            'kadaluwarsa_formatted' => $kadaluwarsa->translatedFormat('Y-m-d'),
+                        ]) }})">
+                        
+                        <div class="relative overflow-hidden">
+                            @if ($donasi->gambar)
+                                <img src="{{ asset('storage/' . $donasi->gambar) }}" alt="Foto Makanan"
+                                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                            @else
+                                <div class="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                    <div class="text-center text-gray-400">
+                                        <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span class="text-sm">Tidak ada foto</span>
                                     </div>
-                                @endif
-                                
-                                <!-- Status Badge -->
-                                <div class="absolute top-3 right-3">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold {{ $donasi->halal ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200' }}">
-                                        {{ $donasi->halal ? 'Halal' : 'Tidak Halal' }}
+                                </div>
+                            @endif
+                            
+                            <div class="absolute top-3 right-3">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold {{ $donasi->halal ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200' }}">
+                                    {{ $donasi->halal ? 'Halal' : 'Tidak Halal' }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">{{ $donasi->nama_makanan }}</h3>
+                            <div class="space-y-2 text-sm text-gray-600">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    <span>{{ $donasi->alamat }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                                    </svg>
+                                    <span>Jumlah: {{ $donasi->jumlah }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>
+                                        @if ($kadaluwarsa->isToday())
+                                            <span class="text-orange-600 font-semibold">Kadaluarsa hari ini</span>
+                                        @elseif ($kadaluwarsa->isTomorrow())
+                                            <span class="text-yellow-600 font-semibold">Kadaluarsa besok</span>
+                                        @elseif ($diffInDays > 1)
+                                            Kadaluarsa {{ $diffInDays }} hari lagi
+                                        @else
+                                            Kadaluarsa {{ $kadaluwarsa->translatedFormat('d M Y') }}
+                                        @endif
                                     </span>
                                 </div>
                             </div>
-                            
-                            <div class="p-6">
-                                <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-600">{{ $donasi->nama_makanan }}</h3>
-                                
-                                <div class="space-y-2 text-sm text-gray-600">
-                                    <div class="flex items-center">
-                                        <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        <span>{{ $donasi->alamat }}</span>
-                                    </div>
-                                    
-                                    <div class="flex items-center">
-                                        <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
-                                        </svg>
-                                        <span>Jumlah: {{ $donasi->jumlah }}</span>
-                                    </div>
-                                    
-                                    <div class="flex items-center">
-                                        <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <span>
-                                            @if ($kadaluwarsa->isToday())
-                                                <span class="text-orange-600 font-semibold">Kadaluarsa hari ini</span>
-                                            @elseif ($kadaluwarsa->isTomorrow())
-                                                <span class="text-yellow-600 font-semibold">Kadaluarsa besok</span>
-                                            @elseif ($diffInDays > 1)
-                                                Kadaluarsa {{ $diffInDays }} hari lagi
-                                            @elseif ($diffInDays === 1)
-                                                <span class="text-yellow-600 font-semibold">Kadaluarsa besok</span>
-                                            @elseif ($diffInDays === -1)
-                                                <span class="text-red-600 font-semibold">Kadaluarsa kemarin</span>
-                                            @elseif ($diffInDays < -1)
-                                                <span class="text-red-600 font-semibold">Sudah lewat {{ abs($diffInDays) }} hari</span>
-                                            @else
-                                                Kadaluarsa {{ $kadaluwarsa->translatedFormat('d M Y') }}
-                                            @endif
-                                        </span>
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-4 pt-4 border-t border-gray-100">
-                                    <button class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-sm">
-                                        Lihat Detail
-                                    </button>
-                                </div>
+
+                            <div class="mt-4 pt-4 border-t border-gray-100">
+                                <button class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-sm transition-all duration-300 transform hover:scale-105">
+                                    Lihat Detail
+                                </button>
                             </div>
                         </div>
-                    @empty
-                        <div class="col-span-full text-center py-16">
-                            <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2 2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                            </svg>
-                            <p class="text-gray-500 text-lg">Tidak ada donasi makanan tersedia saat ini.</p>
-                        </div>
-                    @endforelse
-                </div>
-            </section>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center py-16">
+                        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2 2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                        </svg>
+                        <p class="text-gray-500 text-lg">Tidak ada donasi makanan tersedia saat ini.</p>
+                    </div>
+                @endforelse
+            </div>
+        </section>
 
-            <!-- Enhanced Modal Detail Donasi -->
+        <!-- Enhanced Modal Detail Donasi -->
             <div x-show="open" 
                  x-transition:enter="transition ease-out duration-300"
                  x-transition:enter-start="opacity-0"

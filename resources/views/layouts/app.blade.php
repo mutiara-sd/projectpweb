@@ -188,6 +188,9 @@
             .depth-layer-2 { z-index: 2; }
             .depth-layer-3 { z-index: 3; }
         </style>
+
+        <script src="https://unpkg.com/alpinejs" defer></script>
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen enhanced-bg">
