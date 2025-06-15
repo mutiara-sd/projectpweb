@@ -34,4 +34,28 @@ class PenerimaController extends Controller
         $penerimas = Penerima::with(['user', 'donasi'])->paginate(request('entries', 10));
         return view('admin.penerima', compact('penerimas'));
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'jumlah_diambil' => 'required|integer|min:1',
+        ]);
+
+        $penerima = Penerima::findOrFail($id);
+        $penerima->jumlah_diambil = $request->jumlah_diambil;
+        $penerima->save();
+
+        return redirect()->back()->with('success', 'Data penerima berhasil diperbarui.');
+    }
+
+    // ✅ Hapus data penerima
+    public function destroy($id)
+    {
+        $penerima = Penerima::findOrFail($id);
+        $penerima->delete();
+
+        return redirect()->back()->with('success', 'Data penerima berhasil dihapus.');
+    }
 }
+
+
